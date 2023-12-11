@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { api } from "@/trpc/server";
 import Image from "next/image";
+import Header from "@/components/client/Header";
+import { PlusCircle } from "lucide-react";
 
 export default async function Home() {
   const employees = await api.employee.getEmployees.query();
@@ -8,32 +10,62 @@ export default async function Home() {
   console.log(employees);
 
   return (
-    <main className="flex min-h-screen justify-center bg-neutral-300 p-1 md:p-8">
+    <main className="flex min-h-screen justify-center bg-slate-300 p-1 md:p-8">
       <div className="container mx-auto rounded border border-black bg-white">
         <Header />
-        <section className="my-4 flex justify-center">
-          <p>Welcome To Emplx 🎉</p>
+        <section className="my-4 flex flex-col gap-2">
+          <div className="my-2 flex w-full flex-col items-center gap-2">
+            <Image
+              src={`/employee.png`}
+              height={256}
+              width={256}
+              alt="employee"
+            />
+            <p className="text-bold text-lg italic">
+              A platform for adding and monitoring employee data ✨
+            </p>
+          </div>
+          <div className="my-1 border-t border-black" />
+          <p className="text-xl font-semibold">Functions: Add Data</p>
+          <div className="my-2 flex gap-4">
+            <NewModelCard
+              name="Department"
+              href="/new/department"
+              img="/department.png"
+            />
+            <NewModelCard
+              name="Employee"
+              href="/new/employee"
+              img="/employee.png"
+            />
+          </div>
         </section>
       </div>
     </main>
   );
 }
 
-function Header() {
+function NewModelCard({
+  name,
+  href,
+  img,
+}: {
+  name: string;
+  href: string;
+  img?: string;
+}) {
   return (
-    <div className="flex w-full flex-col items-center justify-evenly gap-1 border-b border-neutral-500 py-4 font-mono md:flex-row md:items-baseline">
-      {/* <section className="flex items-baseline justify-between gap-2"> */}
-      <h1 className="text-3xl font-bold ">Emplx 📝</h1>
-      {/* <Image src={`/employee.png`} width={25} height={25} alt="logo"></Image> */}
-      {/* </section> */}
-      <section className="flex gap-4 ">
-        <Link href={`/employee`} className="hover:underline">
-          employees
-        </Link>
-        <Link href={`/department`} className="hover:underline">
-          departments
-        </Link>
-      </section>
-    </div>
+    <Link
+      href={href}
+      className="flex flex-col items-center justify-center gap-2"
+    >
+      <div className="h-40 w-60 rounded border border-black p-2 hover:bg-slate-200">
+        <div className="mb-2 flex gap-1">
+          <p className="ml-2 font-mono text-xl hover:underline">Add {name}</p>
+          <PlusCircle />
+        </div>
+        {img ? <Image src={img} height={100} width={100} alt={name} /> : null}
+      </div>
+    </Link>
   );
 }

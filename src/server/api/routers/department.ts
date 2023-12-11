@@ -6,7 +6,6 @@ export const departmentRouter = createTRPCRouter({
   .input(
     z.object({
       name: z.string().min(1),
-      location: z.string().min(1),
     })
   )
   .mutation(async ({ctx, input}) =>
@@ -17,6 +16,10 @@ export const departmentRouter = createTRPCRouter({
       }
     })
     return department;
-  })
+  }),
 
+  getDepartments: publicProcedure.query(async ({ctx}) => {
+    const departments = await ctx.db.department.findMany();
+    return departments;
+  }),
 })
