@@ -1,14 +1,14 @@
 <div align="center">
   <h1>Emplx 📝</h1>
-  ![Logo](public/employee.png)  
+  <img src="https://raw.githubusercontent.com/lyt3ral/emplx/main/public/employee.png" alt="Logo" width="200" height="200">    
   <p align="center"><i>A platform for adding and monitoring employee data ✨</i></p>
 </div>
 
 
 <br>
-A web app for employee management 👷‍♂️<br>
-Developed in 24 hrs ⏰<br>
-Here's what i used to make it 👇
+- A web app for employee management 👷‍♂️<br>
+- Developed in 24 hrs ⏰<br>
+- Here's what i used to make it 👇
 
 ## Tech Stack
 
