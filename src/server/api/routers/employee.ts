@@ -35,7 +35,7 @@ export const employeeRouter = createTRPCRouter({
       return employee;
     }),
 
-  getEmployees: publicProcedure.query(async ({ ctx }) => {
+  list: publicProcedure.query(async ({ ctx }) => {
     const employees = await ctx.db.employee.findMany({
       include: {
         Department: true,

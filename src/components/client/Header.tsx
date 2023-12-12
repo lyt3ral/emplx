@@ -12,10 +12,10 @@ export default function Header() {
       {/* <Image src={`/employee.png`} width={25} height={25} alt="logo"></Image> */}
       {/* </section> */}
       <section className="flex gap-4 ">
-        <Link href={`/employee`} className="hover:underline" >
+        <Link href={`/employees`} className="hover:underline" >
           employees
         </Link>
-        <Link href={`/department`} className="hover:underline">
+        <Link href={`/departments`} className="hover:underline">
           departments
         </Link>
       </section>
