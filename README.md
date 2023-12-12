@@ -1,11 +1,14 @@
 <div align="center">
   <h1>Emplx 📝</h1>
-  <p><h3 align="center"><i>A platform for adding and monitoring employee data ✨</i></h3></p>
+  ![Logo](public/employee.png)  
+  <p align="center"><i>A platform for adding and monitoring employee data ✨</i></p>
 </div>
 
 
-A fun to make project, developed in one day
-This is what i used to make it👇
+<br>
+A web app for employee management 👷‍♂️<br>
+Developed in 24 hrs ⏰<br>
+Here's what i used to make it 👇
 
 ## Tech Stack
 
