@@ -59,7 +59,7 @@ function NewModelCard({
       href={href}
       className="flex flex-col items-center justify-center gap-2"
     >
-      <div className="h-40 w-60 rounded border border-black p-2 hover:bg-slate-200">
+      <div className="h-40 w-60 rounded border border-black p-2 hover:bg-slate-300">
         <div className="mb-2 flex gap-1">
           <p className="ml-2 font-mono text-xl hover:underline">Add {name}</p>
           <PlusCircle />

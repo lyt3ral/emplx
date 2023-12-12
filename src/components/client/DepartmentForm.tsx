@@ -50,6 +50,7 @@ export default function DepartmentForm() {
         <FormField
           control={form.control}
           name="name"
+          disabled={isPending}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Department Name</FormLabel>

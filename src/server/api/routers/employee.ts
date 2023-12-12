@@ -12,7 +12,7 @@ export const employeeRouter = createTRPCRouter({
         salary: z.number().min(0),
         hireDate: z.date(),
         jobTitle: z.string().min(1),
-        departmentId: z.number(),
+        departmentId: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -27,11 +27,12 @@ export const employeeRouter = createTRPCRouter({
           jobTitle: input.jobTitle,
           Department: {
             connect: {
-              id: input.departmentId,
+              id: Number(input.departmentId),
             },
           },
         },
       });
+      return employee;
     }),
 
   getEmployees: publicProcedure.query(async ({ ctx }) => {

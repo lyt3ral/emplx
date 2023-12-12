@@ -36,6 +36,9 @@ import {
 
 import { toast } from "react-hot-toast";
 
+import { useTransition } from "react";
+import { api } from "@/trpc/react";
+
 const formSchema = z.object({
   firstName: z.string().min(1),
   lastName: z.string().min(1),
@@ -44,7 +47,7 @@ const formSchema = z.object({
   salary: z.number().min(0),
   hireDate: z.date(),
   jobTitle: z.string().min(1),
-  departmentId: z.number(),
+  departmentId: z.string(),
 });
 
 type Department = {
@@ -57,21 +60,31 @@ export default function EmployeeForm({
 }: {
   departments: Department[];
 }) {
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
+  const createEmployee = api.employee.create.useMutation();
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    startTransition(async () => {
+      console.log(values);
+      const employee = await createEmployee.mutateAsync(values);
+      console.log(employee);
+      if (employee) {
+        toast.success("Employee created")
+      }
+    });
   }
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex w-full justify-evenly gap-4 font-mono"
+        className="flex w-full flex-col justify-evenly gap-4 font-mono md:flex-row"
       >
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           {/* First Name */}
           <FormField
             control={form.control}
@@ -141,7 +154,7 @@ export default function EmployeeForm({
           />
         </div>
 
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           {/* Salary */}
           <FormField
             control={form.control}
@@ -150,7 +163,12 @@ export default function EmployeeForm({
               <FormItem>
                 <FormLabel>Salary</FormLabel>
                 <FormControl>
-                  <Input placeholder=" " {...field} type="number" />
+                  <Input
+                    placeholder=" "
+                    {...field}
+                    type="number"
+                    onChange={(event) => field.onChange(+event.target.value)}
+                  />
                 </FormControl>
                 <FormDescription>Must be a number</FormDescription>
                 <FormMessage />
@@ -229,8 +247,7 @@ export default function EmployeeForm({
                 <FormLabel>Department</FormLabel>
                 <Select
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  value={field.value}
+                  defaultValue={String(field.value)}
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -238,14 +255,19 @@ export default function EmployeeForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {departments.map((department) => (
-                      <SelectItem key={department.id} value={department.id}>
-                        {department.name}
-                      </SelectItem>
-                    ))}
+                    {departments.map((department) => {
+                      return (
+                        <SelectItem
+                          key={department.id}
+                          value={String(department.id)}
+                        >
+                          {department.name}
+                        </SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
-                <FormDescription>Select Employee Department</FormDescription>
+                <FormDescription>Select emp dept.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
