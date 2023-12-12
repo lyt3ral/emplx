@@ -44,13 +44,12 @@ export default function DepartmentForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 font-mono w-full"
+        className="w-full space-y-8 font-mono"
       >
         {/* Name */}
         <FormField
           control={form.control}
           name="name"
-          disabled={isPending}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Department Name</FormLabel>
