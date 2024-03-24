@@ -42,12 +42,13 @@ import * as React from "react";
 import { RouterOutputs } from "@/trpc/shared";
 
 const formSchema = z.object({
-  firstName: z.string().min(1).max(100),
-  lastName: z.string().min(1).max(100),
+  id: z.number(),
+  firstName: z.string().min(1),
+  lastName: z.string().min(1),
   email: z.string().email(),
   phone: z.string().min(10).max(10),
   salary: z.number().min(0),
-  hireDate: z.date().max(new Date(), "Must be in the past"),
+  hireDate: z.date(),
   jobTitle: z.string().min(1),
   departmentId: z.string(),
 });
@@ -59,15 +60,28 @@ type Department = {
 
 export default function EmployeeForm({
   departments,
+  employee,
 }: {
   departments: Department[];
+  employee?: RouterOutputs["employee"]["fetchById"];
 }) {
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      id: employee?.id ?? 0,
+      firstName: employee?.firstName ?? "",
+      lastName: employee?.lastName ?? "",
+      email: employee?.email ?? "",
+      phone: employee?.phone ?? "",
+      salary: employee?.salary ?? 0,
+      hireDate: employee?.hireDate ?? new Date(),
+      jobTitle: employee?.jobTitle ?? "",
+      departmentId: String(employee?.departmentId),
+    },
   });
 
-  const createEmployee = api.employee.create.useMutation();
+  const createEmployee = api.employee.update.useMutation();
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     startTransition(async () => {
@@ -75,7 +89,7 @@ export default function EmployeeForm({
       const employee = await createEmployee.mutateAsync(values);
       console.log(employee);
       if (employee) {
-        toast.success("Employee created");
+        toast.success("Employee updated");
       }
     });
   }
@@ -184,7 +198,7 @@ export default function EmployeeForm({
             name="hireDate"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Hire Date</FormLabel>
+                <FormLabel>Date of birth</FormLabel>
                 {/* <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -242,17 +256,17 @@ export default function EmployeeForm({
                       onSelect={field.onChange}
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       // @ts-ignore
-                      // disabled={(date) =>
-                      //   date > new Date() || date < new Date("2000-01-01")
-                      // }
+                      disabled={(date) =>
+                        date > new Date() || date < new Date("2000-01-01")
+                      }
                       initialFocus
                       captionLayout="dropdown-buttons"
                       fromYear={1960}
-                      toYear={2024}
+                      toYear={2006}
                     />
                   </PopoverContent>
                 </Popover>
-                <FormDescription>Must be in past</FormDescription>
+                <FormDescription>Must be working age adult</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

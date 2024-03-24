@@ -21,10 +21,20 @@ model Employee {
   jobTitle     String
   Department   Department @relation(fields: [departmentId], references: [id])
   departmentId Int
+  Project      Project[]
 }
 
 model Department {
   id       Int        @id @default(autoincrement())
   name     String
   Employee Employee[]
+}
+
+model Project {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  startDate   DateTime
+  endDate     DateTime
+  employees   Employee[]
 }
